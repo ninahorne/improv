@@ -40,20 +40,31 @@ export function SettingsPanel({
           }
         />
 
-        <section className="flex items-center justify-between gap-4">
-          <div className="flex flex-col gap-1">
+        <section className="flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-4">
             <Label htmlFor="vague-initiation">Vague initiation</Label>
-            <p className="text-sm text-foreground/70">
-              Add a random starting line to the suggestion.
-            </p>
+            <Switch
+              id="vague-initiation"
+              checked={settings.includeInitiation}
+              onCheckedChange={(includeInitiation) =>
+                onSettingsChange({ includeInitiation })
+              }
+            />
           </div>
-          <Switch
-            id="vague-initiation"
-            checked={settings.includeInitiation}
-            onCheckedChange={(includeInitiation) =>
-              onSettingsChange({ includeInitiation })
-            }
-          />
+
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex flex-col gap-1">
+              <Label htmlFor="read-aloud">Read aloud</Label>
+              <p className="text-sm text-foreground/70">
+                Have the browser read new suggestions out loud.
+              </p>
+            </div>
+            <Switch
+              id="read-aloud"
+              checked={settings.speakAloud}
+              onCheckedChange={(speakAloud) => onSettingsChange({ speakAloud })}
+            />
+          </div>
         </section>
 
         <AutoRefreshTimer

@@ -1,38 +1,75 @@
-Welcome to your new TanStack Start app!
+# Improv Prompt Generator
 
-# Getting Started
+A prompt generator for improv practice: a random suggestion (word, object, activity, occupation, location, or adjective) plus an optional vague starting line to open a scene. Optionally, the browser reads each new prompt aloud.
 
-To run this application:
+**Live site:** https://improv-prompt-generator.netlify.app
+
+## Features
+
+- Random suggestion from six categories: adjectives, objects, activities, occupations, locations, words
+- Pick which categories to include
+- Optional "vague initiation" — an ambiguous starting sentence for the scene
+- Optional auto-refresh: generate a new suggestion every 30s or 1 min, with a countdown
+- Optional text-to-speech so the browser reads new prompts aloud
+- Neobrutalist UI ([neobrutalism.dev](https://neobrutalism.dev) components built on [Base UI](https://base-ui.com/react))
+
+## Getting Started
 
 ```bash
 pnpm install
 pnpm dev
 ```
 
-# Building For Production
+The dev server runs at [http://localhost:3000](http://localhost:3000).
 
-To build this application for production:
+## Building For Production
 
 ```bash
 pnpm build
+pnpm preview
 ```
 
-## Styling
+## Scripts
 
-This project uses [Tailwind CSS](https://tailwindcss.com/) for styling.
+| Script        | What it does                    |
+| ------------- | ------------------------------- |
+| `pnpm dev`    | Run the dev server on port 3000 |
+| `pnpm build`  | Production build to `dist/`     |
+| `pnpm lint`   | Run eslint                      |
+| `pnpm format` | Prettier + eslint autofix       |
+| `pnpm check`  | Verify prettier formatting      |
 
-### Removing Tailwind CSS
+## Project Structure
 
-If you prefer not to use Tailwind CSS:
+```
+src/
+├── components/       # Feature components + ui/ (neobrutalism primitives)
+│   ├── ui/           # card, badge, toggle, switch, checkbox, progress, ...
+│   ├── category-picker.tsx
+│   ├── settings-panel.tsx
+│   ├── auto-refresh-timer.tsx
+│   └── suggestion-display.tsx
+├── hooks/            # useAutoRefresh (timer), useSpeechForSuggestion (TTS)
+├── lib/
+│   ├── generator.ts  # pure suggestion generator
+│   ├── speech.ts     # Web Speech API wrappers
+│   ├── types.ts      # categories, settings shape
+│   └── utils.ts      # cn(), pickRandom()
+├── data/             # JSON datasets + index mapping categories → data
+└── routes/           # TanStack Router file-based routes
+```
 
-1. Remove the demo pages in `src/routes/demo/`
-2. Replace the Tailwind import in `src/styles.css` with your own styles
-3. Remove `tailwindcss()` from the plugins array in `vite.config.ts`
-4. Remove `@tailwindcss/vite` and `tailwindcss` from `package.json`
+## Editing The Data
+
+All prompts live in `src/data/*.json` — one 1000-entry array per file. To add your own prompts, just edit the JSON files; the generator picks up changes automatically.
+
+## Routing
+
+This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Add a file in `src/routes` and the route tree is generated automatically by `pnpm generate-routes`.
 
 ## Linting & Formatting
 
-This project uses [eslint](https://eslint.org/) and [prettier](https://prettier.io/) for linting and formatting. Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint). The following scripts are available:
+Eslint is configured using [tanstack/eslint-config](https://tanstack.com/config/latest/docs/eslint):
 
 ```bash
 pnpm lint
@@ -40,150 +77,12 @@ pnpm format
 pnpm check
 ```
 
-## Routing
+## Deployment
 
-This project uses [TanStack Router](https://tanstack.com/router) with file-based routing. Routes are managed as files in `src/routes`.
+The app is a static SPA deployed on [Netlify](https://netlify.com) at `improv-prompt-generator.netlify.app`. Build and publish settings live in `netlify.toml` (`pnpm build` → `dist/`, with an SPA fallback redirect).
 
-### Adding A Route
+Redeploy from this repo with:
 
-To add a new route to your application just add a new file in the `./src/routes` directory.
-
-TanStack will automatically generate the content of the route file for you.
-
-Now that you have two routes you can use a `Link` component to navigate between them.
-
-### Adding Links
-
-To use SPA (Single Page Application) navigation you will need to import the `Link` component from `@tanstack/react-router`.
-
-```tsx
-import { Link } from '@tanstack/react-router'
+```bash
+netlify deploy --prod
 ```
-
-Then anywhere in your JSX you can use it like so:
-
-```tsx
-<Link to="/about">About</Link>
-```
-
-This will create a link that will navigate to the `/about` route.
-
-More information on the `Link` component can be found in the [Link documentation](https://tanstack.com/router/v1/docs/framework/react/api/router/linkComponent).
-
-### Using A Layout
-
-In the File Based Routing setup the layout is located in `src/routes/__root.tsx`. Anything you add to the root route will appear in all the routes. The route content will appear in the JSX where you render `{children}` in the `shellComponent`.
-
-Here is an example layout that includes a header:
-
-```tsx
-import { HeadContent, Scripts, createRootRoute } from '@tanstack/react-router'
-
-export const Route = createRootRoute({
-  head: () => ({
-    meta: [
-      { charSet: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'My App' },
-    ],
-  }),
-  shellComponent: ({ children }) => (
-    <html lang="en">
-      <head>
-        <HeadContent />
-      </head>
-      <body>
-        <header>
-          <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-          </nav>
-        </header>
-        {children}
-        <Scripts />
-      </body>
-    </html>
-  ),
-})
-```
-
-More information on layouts can be found in the [Layouts documentation](https://tanstack.com/router/latest/docs/framework/react/guide/routing-concepts#layouts).
-
-## Server Functions
-
-TanStack Start provides server functions that allow you to write server-side code that seamlessly integrates with your client components.
-
-```tsx
-import { createServerFn } from '@tanstack/react-start'
-
-const getServerTime = createServerFn({
-  method: 'GET',
-}).handler(async () => {
-  return new Date().toISOString()
-})
-
-// Use in a component
-function MyComponent() {
-  const [time, setTime] = useState('')
-
-  useEffect(() => {
-    getServerTime().then(setTime)
-  }, [])
-
-  return <div>Server time: {time}</div>
-}
-```
-
-## API Routes
-
-You can create API routes by using the `server` property in your route definitions:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-import { json } from '@tanstack/react-start'
-
-export const Route = createFileRoute('/api/hello')({
-  server: {
-    handlers: {
-      GET: () => json({ message: 'Hello, World!' }),
-    },
-  },
-})
-```
-
-## Data Fetching
-
-There are multiple ways to fetch data in your application. You can use TanStack Query to fetch data from a server. But you can also use the `loader` functionality built into TanStack Router to load the data for a route before it's rendered.
-
-For example:
-
-```tsx
-import { createFileRoute } from '@tanstack/react-router'
-
-export const Route = createFileRoute('/people')({
-  loader: async () => {
-    const response = await fetch('https://swapi.dev/api/people')
-    return response.json()
-  },
-  component: PeopleComponent,
-})
-
-function PeopleComponent() {
-  const data = Route.useLoaderData()
-  return (
-    <ul>
-      {data.results.map((person) => (
-        <li key={person.name}>{person.name}</li>
-      ))}
-    </ul>
-  )
-}
-```
-
-Loaders simplify your data fetching logic dramatically. Check out more information in the [Loader documentation](https://tanstack.com/router/latest/docs/framework/react/guide/data-loading#loader-parameters).
-
-# Learn More
-
-You can learn more about all of the offerings from TanStack in the [TanStack documentation](https://tanstack.com).
-
-For TanStack Start specific documentation, visit [TanStack Start](https://tanstack.com/start).

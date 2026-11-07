@@ -26,4 +26,5 @@ export interface Settings {
   readonly selectedCategories: readonly Category[]
   readonly includeInitiation: boolean
   readonly autoRefreshInterval: number | null
+  readonly speakAloud: boolean
 }

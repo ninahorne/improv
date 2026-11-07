@@ -7,6 +7,7 @@ import { SuggestionDisplay } from '@/components/suggestion-display'
 import { generateSuggestion } from '#/lib/generator'
 import type { Suggestion } from '#/lib/generator'
 import { useAutoRefresh } from '#/hooks/use-auto-refresh'
+import { useSpeechForSuggestion } from '#/hooks/use-speech'
 import { CATEGORIES } from '#/lib/types'
 import type { Settings } from '#/lib/types'
 
@@ -17,6 +18,7 @@ function HomePage() {
     selectedCategories: [...CATEGORIES],
     includeInitiation: false,
     autoRefreshInterval: null,
+    speakAloud: false,
   })
   const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
 
@@ -38,6 +40,8 @@ function HomePage() {
     intervalSeconds: settings.autoRefreshInterval,
     resetKey: suggestion,
   })
+
+  useSpeechForSuggestion(suggestion, settings.speakAloud)
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6 p-6 md:p-8">
