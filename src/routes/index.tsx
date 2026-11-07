@@ -42,7 +42,6 @@ function Home() {
     const randomInitiation = includeInitiation ? initiations[randomNumber(1000)] : '';
     const randomCategoryIndex = randomNumber(1000)
 
-    console.log({resolvedCategories, randomCategory, randomInitiation, randomCategoryIndex})
     let randomSuggestion = ''
     switch (randomCategory) {
       case 'activities':
@@ -65,7 +64,6 @@ function Home() {
           randomSuggestion = occupations[randomCategoryIndex]
           break;
     }
-    console.log({randomSuggestion, randomInitiation})
 
     setGeneratedSuggestion(randomSuggestion)
     setGeneratedInitiation(randomInitiation)
