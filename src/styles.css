@@ -1,6 +1,5 @@
-
-@import "tailwindcss";
-@import "tw-animate-css";
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -45,19 +44,19 @@ body {
   --color-chart-active-dot: var(--chart-active-dot);
   --shadow: var(--shadow);
   @keyframes marquee {
-  0% {
-    transform: translateX(0%);
+    0% {
+      transform: translateX(0%);
     }
-  100% {
-    transform: translateX(-100%);
+    100% {
+      transform: translateX(-100%);
     }
   }
   @keyframes marquee2 {
-  0% {
-    transform: translateX(100%);
+    0% {
+      transform: translateX(100%);
     }
-  100% {
-    transform: translateX(0%);
+    100% {
+      transform: translateX(0%);
     }
   }
 }
@@ -72,11 +71,11 @@ body {
   --border: oklch(0% 0 0);
   --overlay: oklch(0% 0 0 / 0.8);
   --shadow: 4px 4px 0px 0px var(--border);
-  --chart-1: #5294FF;
-  --chart-2: #FF4D50;
-  --chart-3: #FACC00;
-  --chart-4: #05E17A;
-  --chart-5: #7A83FF;
+  --chart-1: #5294ff;
+  --chart-2: #ff4d50;
+  --chart-3: #facc00;
+  --chart-4: #05e17a;
+  --chart-5: #7a83ff;
   --chart-active-dot: #000;
 }
 
@@ -85,22 +84,28 @@ body {
     font-weight: var(--font-weight-base);
     color: var(--foreground);
   }
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-weight: var(--font-weight-heading);
   }
 }
-  body, .scrollbar {
-    --sb-track-color: #ffffff;
-    --sb-thumb-color: #000000;
+body,
+.scrollbar {
+  --sb-track-color: #ffffff;
+  --sb-thumb-color: #000000;
 }
-  .scrollbar::-webkit-scrollbar {
-    width: 16px;
+.scrollbar::-webkit-scrollbar {
+  width: 16px;
 }
-  .scrollbar::-webkit-scrollbar-track {
-    background: var(--sb-track-color);
+.scrollbar::-webkit-scrollbar-track {
+  background: var(--sb-track-color);
 }
-  .scrollbar::-webkit-scrollbar-thumb {
-    background: var(--sb-thumb-color);
+.scrollbar::-webkit-scrollbar-thumb {
+  background: var(--sb-thumb-color);
 }
 
 @supports not selector(::-webkit-scrollbar) {
