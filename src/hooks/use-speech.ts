@@ -1,22 +1,15 @@
 import { useEffect } from 'react'
 
-import type { Suggestion } from '#/lib/generator'
+import type { Prompt } from '#/lib/generator'
 import { cancelSpeech, speakLines } from '#/lib/speech'
 
-/** Reads the current suggestion (and starting line) aloud whenever it changes. */
-export function useSpeechForSuggestion(
-  suggestion: Suggestion | null,
-  enabled: boolean,
-) {
+/** Reads the current prompt (and starting line) aloud whenever it changes. */
+export function useSpeechForPrompt(prompt: Prompt | null, enabled: boolean) {
   useEffect(() => {
-    if (!enabled || !suggestion) return
+    if (!enabled || !prompt) return
 
-    speakLines(
-      suggestion.initiation
-        ? [suggestion.text, suggestion.initiation]
-        : [suggestion.text],
-    )
+    speakLines([prompt.text, prompt.initiation].filter((line) => line !== null))
 
     return () => cancelSpeech()
-  }, [suggestion, enabled])
+  }, [prompt, enabled])
 }

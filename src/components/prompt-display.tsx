@@ -11,31 +11,34 @@ import {
 } from '@/components/ui/card'
 import { Label } from '@/components/ui/label'
 
-import type { Suggestion } from '#/lib/generator'
+import type { Prompt } from '#/lib/generator'
 import { CATEGORY_LABELS } from '#/lib/types'
 
-export interface SuggestionDisplayProps {
-  suggestion: Suggestion | null
+export interface PromptDisplayProps {
+  prompt: Prompt | null
   onGenerate: () => void
 }
 
-export function SuggestionDisplay({
-  suggestion,
-  onGenerate,
-}: SuggestionDisplayProps) {
+export function PromptDisplay({ prompt, onGenerate }: PromptDisplayProps) {
+  const hasWord = prompt?.text !== null && prompt !== null
+
   return (
     <Card className="bg-secondary-background">
       <CardHeader>
-        {suggestion ? (
+        {prompt ? (
           <>
-            <CardAction>
-              <Badge className="uppercase">
-                {CATEGORY_LABELS[suggestion.category]}
-              </Badge>
-            </CardAction>
-            <CardDescription>Your suggestion</CardDescription>
+            {prompt.category !== null && (
+              <CardAction>
+                <Badge className="uppercase">
+                  {CATEGORY_LABELS[prompt.category]}
+                </Badge>
+              </CardAction>
+            )}
+            <CardDescription>
+              {hasWord ? 'Your suggestion' : 'Your starting line'}
+            </CardDescription>
             <CardTitle className="font-heading text-2xl md:text-3xl text-balance">
-              {suggestion.text}
+              {prompt.text ?? prompt.initiation}
             </CardTitle>
           </>
         ) : (
@@ -48,11 +51,11 @@ export function SuggestionDisplay({
         )}
       </CardHeader>
 
-      {suggestion?.initiation && (
+      {hasWord && prompt.initiation !== null && (
         <CardContent className="flex flex-col gap-2">
           <Label className="text-xs uppercase">Starting line</Label>
           <blockquote className="rounded-base border-2 border-border bg-background px-4 py-3 text-base italic">
-            {suggestion.initiation}
+            {prompt.initiation}
           </blockquote>
         </CardContent>
       )}

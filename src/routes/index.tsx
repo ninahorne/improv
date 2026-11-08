@@ -1,13 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useCallback, useState } from 'react'
 
+import { PromptDisplay } from '@/components/prompt-display'
 import { SettingsPanel } from '@/components/settings-panel'
-import { SuggestionDisplay } from '@/components/suggestion-display'
 
-import { generateSuggestion } from '#/lib/generator'
-import type { Suggestion } from '#/lib/generator'
+import { generatePrompt } from '#/lib/generator'
+import type { Prompt } from '#/lib/generator'
 import { useAutoRefresh } from '#/hooks/use-auto-refresh'
-import { useSpeechForSuggestion } from '#/hooks/use-speech'
+import { useSpeechForPrompt } from '#/hooks/use-speech'
 import { CATEGORIES } from '#/lib/types'
 import type { Settings } from '#/lib/types'
 
@@ -16,21 +16,21 @@ export const Route = createFileRoute('/')({ component: HomePage })
 function HomePage() {
   const [settings, setSettings] = useState<Settings>({
     selectedCategories: [...CATEGORIES],
-    includeInitiation: false,
+    mode: 'suggestion',
     autoRefreshInterval: null,
     speakAloud: false,
   })
-  const [suggestion, setSuggestion] = useState<Suggestion | null>(null)
+  const [prompt, setPrompt] = useState<Prompt | null>(null)
 
   const handleSettingsChange = useCallback((update: Partial<Settings>) => {
     setSettings((current) => ({ ...current, ...update }))
   }, [])
 
   const handleGenerate = useCallback(() => {
-    setSuggestion(
-      generateSuggestion({
+    setPrompt(
+      generatePrompt({
         categories: settings.selectedCategories,
-        includeInitiation: settings.includeInitiation,
+        mode: settings.mode,
       }),
     )
   }, [settings])
@@ -38,10 +38,10 @@ function HomePage() {
   const secondsRemaining = useAutoRefresh({
     action: handleGenerate,
     intervalSeconds: settings.autoRefreshInterval,
-    resetKey: suggestion,
+    resetKey: prompt,
   })
 
-  useSpeechForSuggestion(suggestion, settings.speakAloud)
+  useSpeechForPrompt(prompt, settings.speakAloud)
 
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-col gap-6 p-6 md:p-8">
@@ -58,7 +58,7 @@ function HomePage() {
         onSettingsChange={handleSettingsChange}
       />
 
-      <SuggestionDisplay suggestion={suggestion} onGenerate={handleGenerate} />
+      <PromptDisplay prompt={prompt} onGenerate={handleGenerate} />
     </main>
   )
 }
