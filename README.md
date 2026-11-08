@@ -6,10 +6,10 @@ A prompt generator for improv practice: a random suggestion (word, object, activ
 
 ## Features
 
-- Random suggestion from six categories: adjectives, objects, activities, occupations, locations, words
+- Random prompt from six categories: adjectives, objects, activities, occupations, locations, words
 - Pick which categories to include
-- Optional "vague initiation" — an ambiguous starting sentence for the scene
-- Optional auto-refresh: generate a new suggestion every 30s or 1 min, with a countdown
+- Choose what to serve: word only, word + starting line, or starting line only
+- Optional auto-refresh: generate a new prompt every 30s or 1 min, with a countdown
 - Optional text-to-speech so the browser reads new prompts aloud
 - Neobrutalist UI ([neobrutalism.dev](https://neobrutalism.dev) components built on [Base UI](https://base-ui.com/react))
 
